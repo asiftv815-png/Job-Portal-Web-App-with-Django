@@ -1,0 +1,38 @@
+{% extends 'master/base.html' %}
+
+{% block c %}
+
+<h1>Profile Info</h1>
+
+<!-- Profile Image -->
+{% if request.user.user_type == 'recruiter' %}
+    {% if request.user.recruiter_profile.logo %}
+        <img src="{{ request.user.recruiter_profile.logo.url }}"
+             style="width:120px; height:120px; object-fit:cover; border-radius:50%;"
+             alt="Company Logo">
+    {% endif %}
+{% else %}
+    {% if request.user.seeker_profile.profile_image %}
+        <img src="{{ request.user.seeker_profile.profile_image.url }}"
+             style="width:120px; height:120px; object-fit:cover; border-radius:50%;"
+             alt="Profile Image">
+    {% endif %}
+{% endif %}
+
+<hr>
+
+<p>Name: {{ request.user.display_name }}</p>
+<p>Email: {{ request.user.email }}</p>
+<p>User Type: {{ request.user.user_type }}</p>
+
+{% if request.user.user_type == 'recruiter' %}
+    <p>Company Name: {{ request.user.recruiter_profile.company_name }}</p>
+{% else %}
+    <p>Skill Set: {{ request.user.seeker_profile.skill_set }}</p>
+{% endif %}
+
+<a href="{% url 'update_profile_page' %}" class="btn btn-primary">
+    Update Profile
+</a>
+
+{% endblock c %}

@@ -1,0 +1,99 @@
+{% extends 'master/base.html' %}
+
+{% block c %}
+
+<h1>Candidate List for {{ job_data.title }}</h1>
+
+<table class="table table-striped">
+
+    <thead>
+        <tr>
+            <th>SL</th>
+            <th>Name</th>
+            <th>Skill Set</th>
+            <th>Applied Date</th>
+            <th>Resume</th>
+            <th>Status</th>
+        </tr>
+    </thead>
+
+    <tbody>
+
+        {% for candidate in candidate_data %}
+
+        <tr>
+            <td>{{ forloop.counter }}</td>
+
+            <!-- Candidate Name -->
+            <td>{{ candidate.applied_by.seeker.display_name }}</td>
+
+            <!-- Skill Set -->
+            <td>{{ candidate.applied_by.skill_set }}</td>
+
+            <!-- Applied Date -->
+            <td>{{ candidate.applied_at }}</td>
+
+            <!-- Resume -->
+            <td>
+                {% if candidate.resume %}
+                    <a href="{{ candidate.resume.url }}" target="_blank">
+                        Resume
+                    </a>
+                {% else %}
+                    No Resume
+                {% endif %}
+            </td>
+
+            <!-- Status Update -->
+            <td>
+                <form method="POST">
+                    {% csrf_token %}
+
+                    <input type="hidden" name="candidate_id" value="{{ candidate.id }}">
+
+                    <select name="status" class="form-select" onchange="this.form.submit()">
+
+                        <option value="pending"
+                            {% if candidate.status == "pending" %}selected{% endif %}>
+                            pending
+                        </option>
+
+                        <option value="reviewing"
+                            {% if candidate.status == "reviewing" %}selected{% endif %}>
+                            reviewing
+                        </option>
+
+                        <option value="interview"
+                            {% if candidate.status == "interview" %}selected{% endif %}>
+                            interview
+                        </option>
+
+                        <option value="rejected"
+                            {% if candidate.status == "rejected" %}selected{% endif %}>
+                            rejected
+                        </option>
+
+                        <option value="accepted"
+                            {% if candidate.status == "accepted" %}selected{% endif %}>
+                            accepted
+                        </option>
+
+                    </select>
+                </form>
+            </td>
+
+        </tr>
+
+        {% empty %}
+        <tr>
+            <td colspan="6" class="text-center text-muted">
+                No candidates found
+            </td>
+        </tr>
+        {% endfor %}
+
+    </tbody>
+
+</table>
+
+{% endblock c %}

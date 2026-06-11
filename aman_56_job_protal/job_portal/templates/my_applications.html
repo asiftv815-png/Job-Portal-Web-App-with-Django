@@ -1,0 +1,46 @@
+{% extends 'master/base.html' %}
+
+{% block c %}
+<h1>MY applications</h1>
+
+{% for job in application_list %}
+<div class="card shadow-sm border-0 mb-3 mt-2">
+    <div class="card-body">
+        <div class="d-flex align-items-center">
+
+            <div class="flex-shrink-0 me-3">
+                <img src="{{job.applied_job.posted_by.logo.url}}" alt="{{job.applied_job.posted_by.company_name}}" class="rounder" style="width: 80px; height:80px; object-fit: cover;" />
+            </div>
+            <div class="flex-grow-1">
+                <h5 class="mb-1">{{job.applied_job.title}}</h5>
+                <p class="mb-1 text-muted">
+                    <strong>Company Name</strong>
+                    {{job.applied_job.posted_by.company_name}}
+                </p>
+                <p class="mb-1">
+                    <span>{{job.applied_job.posted_by.category.name}}</span>
+
+                </p>
+                <div class="row">
+                    <p class="mb-0 text-success">
+                        <strong>Applied Date: </strong>
+                        {{job.applied_at}}
+                    </p>
+
+                </div>
+
+                <div class="text-end">
+                    <p class="btn btn-sm btn-info">{{job.status}}</p>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+    
+{% endfor %}
+    
+
+{% endblock c %}
+
